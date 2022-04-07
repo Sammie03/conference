@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Developers Conference 2022</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="js/all.js"></script>
+       
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/static/css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:black !important;">
+            <div class="container">
+                <a class="navbar-brand" href="#page-top">
+                Distrupts 2022</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#portfolio">Sessions</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#hostels">Hostels</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#speakers">Speakers</a></li>
+
+                        {% if session.get("loggedin") != None: %}
+                        <li class="nav-item"><a class="nav-link" href="#">Hello {{ userdeets.user_fname }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+
+                         <!--What to display when user is not logged in-->
+
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for("home") }}#login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+<section class="page-section bg-light" style="min-height:90vh">
+    <div class="container-fluid">
+ <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div class="border-end bg-white" id="sidebar-wrapper">
+                 
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="userhome.html">Dashboard</a>
+                     
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile.html">My Profile</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('discussion') }}">Join discussion</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Payments</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="breakout.html">Break Out Session</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('logout') }}">Log Out</a>
+                </div>
+            </div>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <h1 class="mt-4">Break Out Sessions</h1>
+                    <p>Edit your profile by completing the form below.Edit your profile by completing the form below.Edit your profile by completing the form below.Edit your profile by completing the form below.</p>
+
+ 
+                     
+                </div>
+
+                <div class="container">
+                                       <div class="row">
+<div class="col-10 offset-1">
+   <div class="table-responsive">
+    <form action="/user/regbreakout" method="post">
+       <table class="table table-striped" width="80%">
+       <tr>
+           <th>#</th>
+           <th><input type="checkbox" id="selectall"></th>
+           <th>Title</th>
+           <th>Skill Level</th>
+           <th>Icon</th>
+           <th>Action</th>
+       </tr>
+       <input type='hidden' name=csrf_token value="{{ csrf_token() }}"
+       {% if breakouts %}
+       {% for b in breakouts %}
+        <tr>
+           <td>{{ loop.index }}</td>
+           <td><input type="checkbox" name="bid" value="{{ b.break_id }}" id="selectall"></td>
+           <td>{{ b.break_title }}</td>
+           <td>{{ b.skillobj.skill_name }}</td>
+           <td>
+            {% if b.break_picture =='' %}
+            <img src="/static/assets/img/portfolio/4.jpg" alt="" width="30%">
+            {% else %}
+            <img src='/static/assets/img/{{ b.break_picture }}' width='30%'>
+            {% endif %}
+        </td>
+        {#include an else part#}
+           <td><a href='/user/breakout/{{ b.break_skillid }}'>Details</a></td>
+       </tr>
+       {% endfor %}
+       {% endif %}
+
+   </table>
+   <button class="btn btn-outline-primary btn-lg">Sign Up For Selected Sessions</button>
+</form>
+   </div>
+</div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-center">
+                           
+                               
+                           
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </div>    
+    </div>
+</section>
+       
+  
+<!-- Footer-->
+<footer class="footer py-4" style="background-color: #ffc800;">
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2021</div>
+        <div class="col-lg-4 my-3 my-lg-0">
+            
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+            <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+        </div>
+    </div>
+</div>
+</footer>
+
+
+        
+        <!-- Bootstrap core JS-->
+        <script src="/static/js/bootstrap.bundle.min.js"></script>
+         
+    </body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        <title>Developers Conference 2022</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico"/>
+        <!-- Font Awesome icons (free version)-->
+        <script src="/static/js/all.js"></script>
+       
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/static/css/styles.css" rel="stylesheet"/>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:black !important;">
+            <div class="container">
+                <a class="navbar-brand" href="#page-top">
+                Distrupts 2022</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="#top">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('userbreakout') }}">Sessions</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#hostels">Hostels</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#speakers">Speakers</a></li>
+                        <li class="nav-item"><a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">Contact us</a></li>
+                       
+
+                        <!--What to display when user is logged in-->
+
+                        {% if session.get("loggedin") != None: %}
+                        <li class="nav-item"><a class="nav-link" href="#">Hello {{ userdeets.user_fname }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+
+                         <!--What to display when user is not logged in-->
+
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for("home") }}#login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        {% block pagecontent %}
+
+        {% endblock %}
+       
+        <!-- Footer-->
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Contact us</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{ url_for('contactmsg') }}"  id='myform'>
+                      <p id='successmsg'></p>
+                        <div class="row mb-2">
+                        <div class="col-12 mt-5">
+                          {{ contact.fullname (class_='form-control form-control-lg', placeholder='Fullname') }}
+                          {#<span> {{ contact.fullname.errors }} </span>#}
+                        </div>
+                        <div class="col-12 mt-5">
+                          {{ contact.email (class_='form-control form-control-lg', placeholder='Enter Your Email') }}
+                          {#<span>{{ contact.email.errors }}</span>#}
+                        </div>
+                        <div class="col-12 mt-5">
+                            {{ contact.message (class_='form-control form-control-lg', placeholder='Leave a message') }}
+                            {#<span>{{ contact.message.errors }}</span>#}
+                          </div>
+                        <div class="col-12 mt-5 d-grid">
+                          {{ contact.btn(class_='btn btn-outline-warning',type="button") }}
+                          {{ login.csrf_token }}
+                        </div>
+                      </div>
+                      </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        <footer class="footer py-4" style="background-color: #ffc800;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2021</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+       
+        <!-- Jquery core JS-->
+        <script src="/static/js/jquery.min.js"></script> 
+        
+        <!-- Bootstrap core JS-->
+        <script src="/static/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/static/js/scripts.js"></script>
+
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $("#btn").click(function(){ 
+              var email = $("#email").val()
+              var fullname = $("#fullname").val()
+              var message = $("#message").val()
+              var csrf = "{{ csrf_token() }}"
+
+              //method1 - construct data as json
+              //var tosend = {"fullname":fullname, "email":email, "message":message, "csrf_token":csrf}
+
+              //method2 - construct data as query string
+              //var tosend2 = "fullname="+fullname+"&email="+email+"&message="+message+"&csrf_token="+cscf
+
+              //method3: get all the form elements at once using $('#myform').serialize() similar to method 2
+              var tosend3 = $('#myform').serialize()
+
+              alert(tosend3)
+
+              //if email == ''
+
+              //else: #carry out ajax. Validation shld come b4 Ajax
+
+               //$.ajax({key:value, key:value, key:value}) - Ajax syntax to make ajax request
+               $.ajax({
+                  url:"{{ url_for('contactmsg')}}", //similar to form action
+                  type:'post', //similar to form method
+                  data:tosend3,
+                  dataType:'json', //introduce this when the expected dataType is not a text or string. E.g Json for when multiple data will be sent via a diff data structure
+                  success:function(response){ //success is the key, response is a variable that holds the msg to be displayed after successful submission
+                    $("#successmsg").html(response)
+                    $("#successmsg").addClass('alert alert-success')
+                    alert(response['id']) //response location id since the converted json will be in a dict format
+                    alert(response['message'])
+                    $("#email").val("")     //to clear the details after displaying success
+                    $("#fullname").val("")
+                    $("#message").val("")
+                    $("#btn").html('Send')
+                  },
+                  error:function(err){  //a function used in catching errors for troubleshooting purposes
+                    console.log(err)
+                  },
+                  beforeSend:function(){
+                    $("#btn").html('Please wait...')
+                    //alert('Make I see')
+                    //$("#btn").html('<img src="">')
+                  }
+
+               })
+            })
+          })
+        </script>
+       
+    </body>
+</html>

@@ -1,0 +1,59 @@
+{% extends 'admin/adminlayout.html' %}
+
+{% block content %}
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h2 class="text-center text-dark mt-5">BREAKOUT SESSION</h2>
+        
+        <div class="card my-5">
+  
+          
+
+            <div style="text-align:right"><a href='/admin/addbreakout' class="btn btn-lg btn-success">Add Breakout</a></div>
+      
+
+            <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">S/N</th>
+            <th scope="col">Image</th>
+            <th scope="col">Title</th>
+            <th scope="col">Level</th>  
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% if breakdeets %}
+            {% for b in breakdeets %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <th scope="row">
+                {% if b.break_picture =='' %}
+                <img src="/static/assets/img/portfolio/4.jpg" alt="" width="50%">
+                {% else %}
+                <img src='/static/assets/img/{{ b.break_picture }}' width='50%'>
+                {% endif %}
+            </th>
+            <td>
+                {{ b.break_title }}
+            </td>
+            <td>
+                {{ b.break_skillid }}
+            </td>
+            <td><a href='/admin/breakout/delete/{{ b.break_id }}' class="btn btn-sm btn-danger">Delete</a></td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+         
+        </tbody>
+      </table>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

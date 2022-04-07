@@ -1,0 +1,51 @@
+{% extends 'admin/adminlayout.html' %}
+
+{% block content %}
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h2 class="text-center text-dark mt-5"> Breakout Form</h2>
+        
+        <div class="card my-5">
+            <a href='/admin/breakout'>Back to breakout session</a>
+  
+          <form class="card-body cardbody-color p-lg-5" action="" method="post" enctype="multipart/form-data">
+            <input type='hidden' name='csrf_token' value="{{ csrf_token() }}" >
+          
+
+            <div class="text-center">
+              <img src="/static/admin/images/logo.jpg" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                width="200px" alt="profile">
+            </div>
+        
+            <div class="mb-3">
+              
+              <input type="file" class="form-control" id="image" aria-describedby="emailHelp"
+                placeholder="Upload image" name='image'>
+            </div>
+            <div class="mb-3">
+              
+                <input type="text" class="form-control" id="image" aria-describedby="emailHelp"
+                  placeholder="Title" name='title'>
+              </div>
+              <div class="mb-3">
+                <label for="m_level">Skill Level</label>
+                <select name="level" id="m_level" class="m_form-select">
+                    <option value="#">Choose a skill level</option>
+                    {% for i in skills %}
+                    <option value="{{i.skill_id}}">{{i.skill_name}}</option>
+                    {% endfor %}    
+                </select>  
+              </div>
+        
+            <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Add session</button></div>
+             
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
